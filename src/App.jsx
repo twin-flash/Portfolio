@@ -1,4 +1,6 @@
 import { useState, useEffect } from "react";
+import { MdLightMode } from "react-icons/md";
+import { CiDark } from "react-icons/ci";
 
 const projects = [
   { id: 1, title: "Weather-App", tag: "Frontend", year: "2026", desc: "A clean app showing real-time temperature and weather conditions.", link: "https://twin-flash.github.io/WeatherApp/" },
@@ -9,6 +11,7 @@ const projects = [
 const skills = ["HTML", "CSS", "JavaScript", "React", "Tailwind", "Bootstrap", "Python"];
 
 export default function Portfolio() {
+  const [isDark, setIsDark] = useState(true);
   const [active, setActive] = useState("home");
   const [visible, setVisible] = useState(false);
   const [hovered, setHovered] = useState(null);
@@ -41,7 +44,7 @@ export default function Portfolio() {
   const navItems = ["home", "work", "about", "contact"];
 
   return (
-    <div className="min-h-screen bg-black text-white font-mono overflow-x-hidden">
+    <div className={`min-h-screen ${isDark ? "bg-black" : "bg-white"} ${isDark ? "text-white" : "text-black"} font-mono overflow-x-hidden`}>
       <style>{`
         @import url('https://fonts.googleapis.com/css2?family=Space+Mono:ital,wght@0,400;0,700;1,400&family=Syne:wght@400;700;800&display=swap');
         * { font-family: 'Space Mono', monospace; }
@@ -73,27 +76,34 @@ export default function Portfolio() {
           ))}
         </div>
       </nav>
-
+      
+      {/* dark mode toggle */}
+      <button
+        onClick={() => setIsDark(!isDark)}
+        className={`fixed bottom-5 right-5 z-50 w-10 h-10 rounded-full border flex items-center justify-center text-xl md:text-2xl ${isDark ? "text-white/70 hover:border-white hover:text-white" : "text-black/70 hover:border-black border-black/20 border hover:text-black"} transition-colors`}
+      >
+        {isDark ? <CiDark /> : <MdLightMode />}
+      </button>
       {/* Hero */}
       <section id="home" className="min-h-screen flex flex-col justify-center px-8 md:px-20 pt-20 relative">
         <div className={`fade-up ${visible ? "show" : ""} max-w-4xl`}>
-          <h1 className="syne font-extrabold text-6xl md:text-8xl leading-none mb-6 text-white">
+          <h1 className={`syne font-extrabold text-6xl md:text-8xl leading-none mb-6 ${isDark ? "text-white" : "text-black"}`}>
             Mohan<br />
-            <span className="text-white/20">Kumar Sugumar</span>
+            <span className={` ${isDark ? "text-white/20" : "text-black/20"}`}>Kumar Sugumar</span>
           </h1>
-          <p className="text-white/50 text-sm md:text-base max-w-md leading-relaxed mb-10">
+          <p className={`text-sm md:text-base max-w-md leading-relaxed mb-10 ${isDark ? "text-white/50" : "text-black/50"}`}>
             I'm a curious and goal-driven developer passionate about building practical, real-world projects.
           </p>
           <div className="flex gap-4 flex-wrap">
             <button
               onClick={() => scrollTo("work")}
-              className="px-6 py-3 bg-white text-black text-xs font-bold uppercase tracking-widest hover:bg-white/80 transition-colors"
+              className={`px-6 py-3 ${isDark ? "bg-white text-black" : "bg-black text-white"} text-xs font-bold uppercase tracking-widest hover:opacity-80 transition-colors`}
             >
               View Work →
             </button>
             <button
               onClick={() => scrollTo("contact")}
-              className="px-6 py-3 border border-white/30 text-xs uppercase tracking-widest hover:border-white hover:text-white transition-colors text-white/70"
+              className={`px-6 py-3 border  text-xs uppercase tracking-widest  transition-colors ${isDark ? "text-white/70 hover:border-white hover:text-white " : "text-black/70 hover:text-black border border-black/30 hover:border-black/70"}`}
             >
               Get in Touch
             </button>
@@ -104,26 +114,26 @@ export default function Portfolio() {
       {/* Work */}
       <section id="work" className="px-8 md:px-20 py-24">
         <div className="mb-16">
-          <p className="text-white/50 text-xs tracking-[0.4em] uppercase mb-3">Selected Work</p>
-          <h2 className="syne font-bold text-4xl md:text-5xl text-white">Projects</h2>
+          <p className={`text-xs tracking-[0.4em] uppercase mb-3 ${isDark ? "text-white/50" : "text-black/50"}`}>Selected Work</p>
+          <h2 className={`syne font-bold text-4xl md:text-5xl ${isDark ? "text-white" : "text-black"}`}>Projects</h2>
         </div>
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
           {projects.map((p) => (
             <div
               key={p.id}
-              className="card-hover border border-white/10 p-8 cursor-pointer relative overflow-hidden group"
+              className={`card-hover border p-8 cursor-pointer relative overflow-hidden group ${isDark ? "hover:bg-white/5" : "hover:bg-black/5"}`}
               style={{ background: hovered === p.id ? "rgba(255,255,255,0.05)" : "rgba(255,255,255,0.02)" }}
               onMouseEnter={() => setHovered(p.id)}
               onMouseLeave={() => setHovered(null)}
             >
               <div className="absolute top-0 left-0 w-1 h-0 bg-white group-hover:h-full transition-all duration-500" />
               <div className="flex justify-between items-start mb-6">
-                <span className="text-xs text-white/50 uppercase tracking-widest">{p.tag}</span>
-                <span className="text-xs text-white/30">{p.year}</span>
+                <span className={`text-xs ${isDark ? "text-white/50" : "text-black/50"} uppercase tracking-widest`}>{p.tag}</span>
+                <span className={`text-xs ${isDark ? "text-white/30" : "text-black/30"}`}>{p.year}</span>
               </div>
-              <h3 className="syne font-bold text-2xl mb-3 text-white">{p.title}</h3>
-              <p className="text-white/50 text-sm leading-relaxed">{p.desc}</p>
-              <a href={p.link} target="_blank" rel="noopener noreferrer" className="mt-6 block text-xs text-white/30 group-hover:text-white transition-colors">
+              <h3 className={`syne font-bold text-2xl mb-3 ${isDark ? "text-white" : "text-black"}`}>{p.title}</h3>
+              <p className={`text-sm leading-relaxed ${isDark ? "text-white/50" : "text-black/50"}`}>{p.desc}</p>
+              <a href={p.link} target="_blank" rel="noopener noreferrer" className={`mt-6 block text-xs ${isDark ? "text-white/30 group-hover:text-white" : "text-black/30 group-hover:text-black"} transition-colors`}>
                 View Project →
               </a>
             </div>
@@ -132,24 +142,24 @@ export default function Portfolio() {
       </section>
 
       {/* About */}
-      <section id="about" className="px-8 md:px-20 py-24 border-t border-white/10">
+      <section id="about" className={`px-8 md:px-20 py-24 border-t ${isDark ? "border-white/10" : "border-black/10"}`}>
         <div className="grid grid-cols-1 md:grid-cols-2 gap-16">
           <div>
-            <p className="text-white/50 text-xs tracking-[0.4em] uppercase mb-3">About</p>
-            <h2 className="syne font-bold text-4xl mb-8 text-white">A bit about me.</h2>
-            <p className="text-white/50 text-sm leading-relaxed mb-4">
+            <p className={`text-xs tracking-[0.4em] uppercase mb-3 ${isDark ? "text-white/50" : "text-black/50"}`}>About</p>
+            <h2 className={`syne font-bold text-4xl mb-8 ${isDark ? "text-white" : "text-black"}`}>A bit about me.</h2>
+            <p className={`text-sm leading-relaxed mb-4 ${isDark ? "text-white/50" : "text-black/50"}`}>
               I'm a curious and disciplined developer who enjoys building practical, problem-solving projects.
               With a strong interest in backend and full-stack development, I focus on writing clean and efficient code.
             </p>
-            <p className="text-white/50 text-sm leading-relaxed">
+            <p className={`text-sm leading-relaxed ${isDark ? "text-white/50" : "text-black/50"}`}>
               I'm continuously learning and improving to grow into a skilled and job-ready software developer.
             </p>
           </div>
           <div>
-            <p className="text-white/50 text-xs tracking-[0.4em] uppercase mb-6">Stack</p>
+            <p className={`text-xs tracking-[0.4em] uppercase mb-6 ${isDark ? "text-white/50" : "text-black/50"}`}>Stack</p>
             <div className="flex flex-wrap gap-2">
               {skills.map((s) => (
-                <span key={s} className="px-4 py-2 border border-white/20 text-xs text-white/60 hover:border-white hover:text-white transition-all cursor-default">
+                <span key={s} className={`px-4 py-2 border ${isDark ? "border-white/20 text-white/60 hover:border-white hover:text-white" : "border-black/20 text-black/60 hover:border-black hover:text-black"} transition-all cursor-default`}>
                   {s}
                 </span>
               ))}
@@ -159,18 +169,20 @@ export default function Portfolio() {
       </section>
 
       {/* Contact */}
-      <section id="contact" className="px-8 md:px-20 py-24 border-t border-white/10 flex items-center justify-center">
+      <section id="contact" className={`px-8 md:px-20 py-24 border-t ${isDark ? "border-white/10" : "border-black/10"} flex items-center justify-center`}>
         <div className="max-w-2xl w-full">
-          <p className="text-white/50 text-xs tracking-[0.4em] uppercase mb-3">Contact</p>
+          <p className={`text-xs tracking-[0.4em] uppercase mb-3 ${isDark ? "text-white/50" : "text-black/50"}`}>Contact</p>
           <div className="space-y-4 ">
             {[
               { label: "Instagram", val: "https://www.instagram.com/twin_flash/" },
               { label: "LinkedIn", val: "#Soon" },
               { label: "GitHub", val: "https://github.com/twin-flash" },
             ].map((item) => (
-              <div key={item.label} className="flex items-center justify-between border-b border-white/10 pb-4 group cursor-pointer">
-                <span className="text-xs text-white/30 uppercase tracking-widest">{item.label}</span>
-                <a href={item.val} className="text-sm truncate max-w-6/12 text-white/70 group-hover:text-white transition-colors">{item.val}</a>
+              <div key={item.label} className={`flex items-center justify-between border-b ${isDark ? "border-white/10" : "border-black/10"} pb-4 group cursor-pointer`}>
+                <span className={`text-xs ${isDark ? "text-white/30" : "text-black/30"} uppercase tracking-widest`}>{item.label}</span>
+                <a href={item.val} className={`text-sm truncate max-w-6/12 ${isDark ? "text-white/70 group-hover:text-white" : "text-black/70 group-hover:text-black"} transition-colors`}>
+                  {item.val}
+                </a>
               </div>
             ))}
           </div>
@@ -178,7 +190,7 @@ export default function Portfolio() {
       </section>
 
       {/* Footer */}
-      <footer className="px-8 md:px-20 py-8 border-t border-white/10 flex justify-between items-center text-xs text-white/30">
+      <footer className={`px-8 md:px-20 py-8 border-t ${isDark ? "border-white/10" : "border-black/10"} flex justify-between items-center text-xs ${isDark ? "text-white/30" : "text-black/30"}`}>
         <span>© 2026 Mohan Sugumar</span>
         <span>Built with React + Tailwind</span>
       </footer>
